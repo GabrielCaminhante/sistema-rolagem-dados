@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Bem-vindo ao Sistema de Rolagem</title>
+  <style>
+    html, body {
+      height: 100%;
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(to right, #e0f7fa, #fce4ec);
+      color: #333;
+      display: flex;
+      flex-direction: column;
+    }
+
+    main {
+      flex: 1;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 40px 20px;
+    }
+
+    .container {
+      max-width: 700px;
+      padding: 30px;
+      background: #fff;
+      border-radius: 16px;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+      text-align: center;
+      animation: fadeIn 1.2s ease-out;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    h1 {
+      font-size: 36px;
+      margin-bottom: 20px;
+      color: #00796B;
+    }
+
+    p {
+      font-size: 18px;
+      line-height: 1.6;
+      margin-bottom: 20px;
+    }
+
+    ul {
+      text-align: left;
+      margin: 0 auto 20px;
+      max-width: 600px;
+      padding-left: 20px;
+      font-size: 17px;
+    }
+
+    li {
+      margin-bottom: 12px;
+    }
+
+    .btn {
+      background: linear-gradient(to right, #00796B, #009688);
+      color: white;
+      border: none;
+      padding: 15px 40px;
+      font-size: 18px;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .btn:hover {
+      transform: scale(1.05);
+      box-shadow: 0 0 10px rgba(0,121,107,0.6);
+    }
+
+    .emoji {
+      font-size: 22px;
+      margin-right: 8px;
+    }
+
+    footer {
+      padding: 15px 0;
+      background-color: #f1f1f1;
+      border-top: 1px solid #ddd;
+      text-align: center;
+      font-size: 15px;
+      color: #555;
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <div class="container">
+      <h1>🎲 Sistema de Rolagem de Dados</h1>
+      <p>Transforme seus <strong>jogos caseiros</strong> com uma rolagem divertida, visual e personalizada. Ideal para reunir amigos e criar momentos memoráveis!</p>
+
+      <p><strong>Funcionalidades:</strong></p>
+      <ul>
+        <li><span class="emoji">🎨</span> Escolha de cor para identificar cada jogador</li>
+        <li><span class="emoji">🎲</span> Rolagens variadas: 2d6, 1d87, 1d2, 1d60</li>
+        <li><span class="emoji">⏳</span> Suspense visual na rolagem</li>
+        <li><span class="emoji">📜</span> Histórico com cores e nomes</li>
+        <li><span class="emoji">🧹</span> Botão para limpar histórico</li>
+      </ul>
+
+      <p><strong>Aplicações:</strong> Jogos de tabuleiro, dinâmicas em grupo, sorteios e decisões rápidas.</p>
+
+      <p style="font-size: 15px; color: #888; font-style: italic;">
+        ⚠️ Esta aplicação está em desenvolvimento e representa apenas um protótipo inicial. Algumas funcionalidades podem ser ajustadas ou aprimoradas nas próximas versões.
+      </p>
+
+      <button class="btn" onclick="irParaRolagem()">Ir para a Rolagem de Dados</button>
+    </div>
+  </main>
+
+  <footer>
+    <p>Desenvolvido com ❤️ por <strong>Gabriel Aparecido de Oliveira</strong></p>
+  </footer>
+
+  <script>
+    function irParaRolagem() {
+      window.location.href = "rolagem.html"; // Altere para o nome real do seu arquivo de rolagem
+    }
+  </script>
+</body>
+</html>

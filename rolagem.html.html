@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sistema de Rolagem de Dados</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: linear-gradient(to right, #e0f7fa, #fce4ec);
+      margin: 0;
+      padding: 0;
+      text-align: center;
+      color: #333;
+    }
+    .container {
+      max-width: 800px;
+      margin: 50px auto;
+      padding: 10px;
+      background: #fff;
+      border-radius: 20px;
+      box-shadow: 0 0 15px rgba(0,0,0,0.1);
+    }
+    h1 {
+      font-size: 32px;
+      margin-bottom: 20px;
+      color: #00796B;
+    }
+    select, button {
+      margin: 10px;
+      padding: 10px 20px;
+      font-size: 16px;
+      cursor: pointer;
+      border-radius: 8px;
+      border: none;
+    }
+    select {
+      background-color: #f0f0f0;
+    }
+    button {
+      background-color: #00796B;
+      color: white;
+      transition: background-color 0.3s ease;
+    }
+    button:hover {
+      background-color: #004D40;
+    }
+    #cor-selecionada {
+      margin-top: 20px;
+      font-weight: bold;
+      color: #222;
+    }
+    .botoes {
+      margin-top: 20px;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 10px;
+    }
+    #resultado {
+      margin-top: 30px;
+      font-size: 30px;
+      font-weight: bold;
+      max-width: 800px;
+      color: #333;
+      background: #ffffff;
+      margin-left: 200px;
+      margin-right: 200px;
+      text-align: center;
+      padding: 20px;
+      border-radius: 20px;
+      box-shadow: 0 0 5px rgba(0,0,0,0.1);
+      transition: transform 0.3s ease, background-color 0.3s ease;
+    }
+    #resultado:hover {
+      transform: scale(1.02);
+    }
+    #resultado.rolando {
+      animation: suspense 2s ease-in-out;
+    }
+    @keyframes suspense {
+      0% { opacity: 0.2; transform: scale(1); }
+      25% { opacity: 0.6; transform: scale(1.2); }
+      50% { opacity: 1; transform: scale(1); }
+      75% { opacity: 0.6; transform: scale(1.2); }
+      100% { opacity: 1; transform: scale(1); }
+    }
+    #historico {
+      margin-top: 30px;
+      font-size: 14px;
+      color: #666;
+      max-width: 600px;
+      margin-left: auto;
+      margin-right: auto;
+      text-align: left;
+      background: #f9f9f9;
+      padding: 30px;
+      border-radius: 30px;
+      box-shadow: 0 0 5px rgba(0,0,0,0.1);
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>🎲 Sistema de Rolagem de Dados</h1>
+    <label for="cor">Escolha sua cor:</label>
+    <select id="cor" class="color-select">
+      <option value="">-- Selecione --</option>
+      <option value="Verde" data-color="#4CAF50">🟢 Verde</option>
+      <option value="Amarelo" data-color="#FFEB3B">🟡 Amarelo</option>
+      <option value="Roxo" data-color="#9C27B0">🟣 Roxo</option>
+      <option value="Azul" data-color="#2196F3">🔵 Azul</option>
+      <option value="Vermelho" data-color="#F44336">🔴 Vermelho</option>
+      <option value="Cinza" data-color="#9E9E9E">⚪ Cinza</option>
+    </select>
+    <div id="cor-selecionada"></div>
+    <div class="botoes">
+      <button onclick="rolarComSuspense(rolar2d6)">Rolar para andar</button>
+      <button onclick="rolarComSuspense(rolar1d87)">Sorte ou Revés?</button>
+      <button onclick="rolarComSuspense(rolar1d2)">Direita ou Esquerda?</button>
+      <button onclick="rolarComSuspense(rolar1d60)">Achado?</button>
+      <button onclick="limparHistorico()">🧹 Limpar Histórico</button>
+    </div>
+    <div id="resultado"></div>
+    <div id="historico"><strong>Histórico de Rolagens:</strong></div>
+  </div>
+
+  <script>
+    let corAtual = "";
+
+    window.onload = function () {
+      const historicoSalvo = localStorage.getItem("historico");
+      if (historicoSalvo) {
+        document.getElementById("historico").innerHTML = historicoSalvo;
+      }
+    };
+
+    document.getElementById("cor").addEventListener("change", function () {
+      corAtual = this.value;
+      document.getElementById("cor-selecionada").innerText = corAtual ? `Jogador com cor: ${corAtual}` : "";
+      aplicarCorVisual(corAtual);
+    });
+
+    function aplicarCorVisual(cor) {
+      const resultado = document.getElementById("resultado");
+      const historico = document.getElementById("historico");
+      const cores = {
+        Verde: "#c8f7c5",
+        Amarelo: "#fff9c4",
+        Roxo: "#e1bee7",
+        Azul: "#bbdefb",
+        Vermelho: "#ffcdd2",
+        Cinza: "#e0e0e0"
+      };
+      const corHex = cores[cor] || "#ffffff";
+      resultado.style.backgroundColor = corHex;
+      historico.style.backgroundColor = corHex;
+    }
+
+    function rolarComSuspense(funcaoRolagem) {
+      if (!corAtual) {
+        alert("Escolha uma cor antes de rolar os dados!");
+        return;
+      }
+      const resultado = document.getElementById("resultado");
+      resultado.classList.add("rolando");
+      resultado.innerText = "🎲 Rolando...";
+      setTimeout(() => {
+        resultado.classList.remove("rolando");
+        funcaoRolagem();
+      }, 2000);
+    }
+
+    function adicionarAoHistorico(texto) {
+      const historico = document.getElementById("historico");
+      const linha = document.createElement("div");
+      const select = document.getElementById("cor");
+      const corHex = select.querySelector(`option[value="${corAtual}"]`)?.dataset.color || "#000";
+      linha.innerHTML = `
+        <hr style="border: none; border-top: 1px dashed #ccc; margin: 10px 0;">
+        <span style="
+          display: inline-block;
+          width: 12px;
+          height: 12px;
+          border-radius: 50%;
+          background-color: ${corHex};
+          margin-right: 10px;
+          vertical-align: middle;
+        "></span>
+        <strong style="color:${corHex}">${corAtual}</strong> → ${texto}
+      `;
+      historico.appendChild(linha);
+      localStorage.setItem("historico", historico.innerHTML);
+    }
+
+    function limparHistorico() {
+      const historico = document.getElementById("historico");
+      historico.innerHTML = "<strong>Histórico de Rolagens:</strong>";
+      localStorage.removeItem("historico");
+    }
+
+    function rolar2d6() {
+      const d1 = Math.floor(Math.random() * 6) + 1;
+      const d2 = Math.floor(Math.random() * 6) + 1;
+      const total = d1 + d2;
+      const texto = `🎲 Rolagem 2d6: 🎲 ${d1} + 🎲 ${d2} = ${total}`;
+      document.getElementById("resultado").innerHTML = texto;
+      adicionarAoHistorico(texto);
+    }
+
+    function rolar1d87() {
+      const d87 = Math.floor(Math.random() * 87) + 1;
+      const texto = ` Sorte ou Revés: 🎲 ${d87}`;
+      document.getElementById("resultado").innerHTML = texto;
+      adicionarAoHistorico(texto);
+    }
+
+    function rolar1d60() {
+      const d60 = Math.floor(Math.random() * 60) + 1;
+      const texto = ` Achado? 🎲 ${d60}`;
+      document.getElementById("resultado").innerHTML = texto;
+      adicionarAoHistorico(texto);
+    }
+
+    function rolar1d2() {
+      const d2 = Math.floor(Math.random() * 2) + 1;
+      const direcao = d2 === 1 ? "➡️ Direita" : "⬅️ Esquerda";
+      const texto = ` Direção: 🎲 ${d2} → ${direcao}`;
+      document.getElementById("resultado").innerHTML = texto;
+      adicionarAoHistorico(texto);
+    }
+  </script>
+</body>
+</html>
