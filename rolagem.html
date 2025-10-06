@@ -193,8 +193,25 @@
       `;
       historico.appendChild(linha);
       localStorage.setItem("historico", historico.innerHTML);
+      enviarParaDiscord(`🎲 ${corAtual} → ${texto}`);
     }
+         //eviar resultado para o discord 
+    function enviarParaDiscord(mensagem) {
+    const webhookURL = "https://discord.com/api/webhooks/1424551247280738345/0ZnOzbyRetvAr8ACLF618UqNqxVL_mzV-JOlnD2A-JMKwT68lPJXJ2akMPaJT_5y5XyR";
 
+    fetch(webhookURL, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ content: mensagem })
+    })
+    .then(response => {
+      if (response.ok) {
+        console.log("Mensagem enviada ao Discord!");
+      } else {
+        console.error("Erro ao enviar para o Discord.");
+      }
+    });
+  }
     function limparHistorico() {
       const historico = document.getElementById("historico");
       historico.innerHTML = "<strong>Histórico de Rolagens:</strong>";
@@ -234,4 +251,5 @@
   </script>
 </body>
 </html>
+
 
