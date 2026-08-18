@@ -4,7 +4,6 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Bem-vindo ao Sistema de Rolagem</title>
-  <link rel="stylesheet" href="css/style.css">
   <link rel="stylesheet" href="css/index.css">
 </head>
 <body>
@@ -26,37 +25,60 @@
       <button class="btn" onclick="mostrarConfiguracaoSala()">Criar Nova Sala</button>
     </div>
 
-    <!-- BLOCO 2: Configuração da Sala (Limite de 12 jogadores e Dados) -->
+    <!-- BLOCO 2: Configuração da Sala -->
     <div id="container-config-sala" class="container hidden">
       <h1>🛡️ Configuração da Sala de RPG</h1>
-      <p>Defina as regras e os dados que estarão disponíveis na mesa.</p>
+      <p>Defina a quantidade de participantes para configurar os perfis.</p>
 
-      <form id="form-criar-sala" onsubmit="criarMesaRpg(event)">
-        <div class="form-group">
-          <label for="qtd-jogadores"><strong>Quantidade máxima de jogadores (Máx: 12):</strong></label>
-          <input type="number" id="qtd-jogadores" min="1" max="12" value="4" required>
+      <div class="form-group">
+        <label for="qtd-jogadores"><strong>Quantidade máxima de jogadores (Máx: 12):</strong></label>
+        <div class="input-flex-container">
+          <input type="number" id="qtd-jogadores" min="1" max="12" value="4">
+          <button type="button" class="btn btn-confirmar-jogadores" onclick="abrirModalJogadores()">Confirmar e Definir Jogadores</button>
         </div>
+      </div>
 
-        <div class="form-group">
-          <p><strong>Selecione os dados disponíveis na mesa:</strong></p>
-          <div class="grid-dados">
-            <label><input type="checkbox" name="dados-rpg" value="d2" checked> D2</label>
-            <label><input type="checkbox" name="dados-rpg" value="d4" checked> D4</label>
-            <label><input type="checkbox" name="dados-rpg" value="d6" checked> D6</label>
-            <label><input type="checkbox" name="dados-rpg" value="d8" checked> D8</label>
-            <label><input type="checkbox" name="dados-rpg" value="d10" checked> D10</label>
-            <label><input type="checkbox" name="dados-rpg" value="d12" checked> D12</label>
-            <label><input type="checkbox" name="dados-rpg" value="d20" checked> D20</label>
-            <label><input type="checkbox" name="dados-rpg" value="d100" checked> D100</label>
+      <!-- Pré-exibição dos Jogadores Cadastrados em Cards -->
+      <div id="area-jogadores-previa" class="hidden">
+        <p class="subtitulo-secao">⚔️ Jogadores na Mesa:</p>
+        <div id="grid-jogadores" class="grid-jogadores-cards"></div>
+      </div>
+
+      <!-- Seleção Avançada de Dados (Liberada após configurar jogadores) -->
+      <form id="form-criar-sala" onsubmit="criarMesaRpg(event)" class="hidden">
+        <div class="form-group secao-dados-expandida">
+          <h2>🎲 Escolha os Tipos de Dados da Mesa</h2>
+          
+          <div class="grupo-dados">
+            <p>Dados de Sistema Tradicionais (D&D / Sistemas D20):</p>
+            <div class="grid-dados">
+              <label><input type="checkbox" name="dados-rpg" value="d4" checked> D4</label>
+              <label><input type="checkbox" name="dados-rpg" value="d6" checked> D6</label>
+              <label><input type="checkbox" name="dados-rpg" value="d8" checked> D8</label>
+              <label><input type="checkbox" name="dados-rpg" value="d10" checked> D10</label>
+              <label><input type="checkbox" name="dados-rpg" value="d12" checked> D12</label>
+              <label><input type="checkbox" name="dados-rpg" value="d20" checked> D20</label>
+              <label><input type="checkbox" name="dados-rpg" value="d100" checked> D100</label>
+            </div>
           </div>
-        </div>
 
-        <div class="form-group">
-          <p><strong>Dados Customizados adicionais:</strong></p>
-          <label>
-            <input type="checkbox" id="incluir-booleano" value="booleano"> 
-            Incluir Dado Booleano (Verdadeiro / Falso)
-          </label>
+          <div class="grupo-dados">
+            <p>Múltiplas Rolagens Combinadas (Sistemas de Dados/Pools):</p>
+            <div class="grid-dados">
+              <label><input type="checkbox" name="dados-rpg" value="2d6"> 2D6</label>
+              <label><input type="checkbox" name="dados-rpg" value="3d6"> 3D6</label>
+              <label><input type="checkbox" name="dados-rpg" value="2d20"> 2D20</label>
+            </div>
+          </div>
+
+          <div class="grupo-dados">
+            <p>Dados de Utilidade e Mecânicas Customizadas:</p>
+            <div class="grid-dados">
+              <label><input type="checkbox" name="dados-rpg" value="d2"> D2 (Direção)</label>
+              <label><input type="checkbox" id="incluir-booleano" value="booleano"> V / F (Booleano)</label>
+              <label><input type="checkbox" id="incluir-sorte" value="sorte-azar"> Sorte ou Azar 🍀</label>
+            </div>
+          </div>
         </div>
 
         <div class="botoes-container">
@@ -66,6 +88,19 @@
       </form>
     </div>
   </main>
+
+  <!-- MODAL DINÂMICO DE JOGADORES -->
+  <div id="modal-jogadores" class="modal">
+    <div class="modal-content">
+      <h3>🎭 Identificação dos Jogadores</h3>
+      <p>Insira o apelido e escolha uma cor exclusiva para cada participante da mesa.</p>
+      <div id="container-inputs-modal"></div>
+      <div class="botoes-container">
+        <button type="button" class="btn btn-secundario" onclick="fecharModalJogadores()">Cancelar</button>
+        <button type="button" class="btn" onclick="salvarPerfisModal()">Confirmar Perfis</button>
+      </div>
+    </div>
+  </div>
 
   <footer>
     <p>Sistema em Desenvolvimento por <strong>Gabriel Aparecido de Oliveira</strong></p>
