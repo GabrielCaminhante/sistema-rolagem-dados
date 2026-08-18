@@ -1,1 +1,57 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mesa de Jogo - Rolagem de Dados</title>
+  <link rel="stylesheet" href="css/jogo.css">
+</head>
+<body>
+  <div class="container">
+    <h1>🎲 Mesa de RPG</h1>
+    
+    <!-- Painel de Identificação Superior -->
+    <div class="painel-jogador">
+      <label for="cor">Escolha sua Cor de Jogador:</label>
+      <select id="cor">
+        <option value="">-- Selecione sua Cor --</option>
+        <option value="Verde" data-color="#4CAF50">Verde</option>
+        <option value="Amarelo" data-color="#FFEB3B">Amarelo</option>
+        <option value="Roxo" data-color="#9C27B0">Roxo</option>
+        <option value="Azul" data-color="#2196F3">Azul</option>
+        <option value="Vermelho" data-color="#F44336">Vermelho</option>
+        <option value="Cinza" data-color="#9E9E9E">Cinza</option>
+        <option value="Laranja" data-color="#FF9800">Laranja</option>
+        <option value="Rosa" data-color="#E91E63">Rosa</option>
+        <option value="Ciano" data-color="#00BCD4">Ciano</option>
+        <option value="Marrom" data-color="#795548">Marrom</option>
+        <option value="Preto" data-color="#212121">Preto</option>
+        <option value="Ouro" data-color="#FFD700">Ouro</option>
+      </select>
+      <div id="cor-selecionada"></div>
+    </div>
+
+    <!-- Container onde o dados.js vai injetar os botões de dados dinamicamente -->
+    <div id="container-botoes-dados" class="botoes"></div>
+
+    <!-- Painel de Resultados -->
+    <div id="resultado">Escolha uma cor e role os dados!</div>
+
+    <!-- Histórico de Rolagens -->
+    <div id="historico">
+      <strong>Histórico de Rolagens:</strong>
+    </div>
+
+    <!-- Área de botões utilitários inferiores -->
+    <div class="botoes-utilitarios">
+      <button class="btn-limpar" onclick="limparHistorico()">Limpar Histórico 🧹</button>
+      <button class="btn-voltar" onclick="voltarAoMenu()">Voltar ao Menu ↩️</button>
+    </div>
+  </div>
+
+  <!-- Ordem correta de carregamento dos scripts -->
+  <script src="js/discord.js"></script>
+  <script src="js/dados.js"></script>
+</body>
+</html>
 
