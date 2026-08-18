@@ -2,119 +2,68 @@
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Bem-vindo ao Sistema de Rolagem</title>
-  <style>
-    html, body {
-      height: 100%;
-      margin: 0;
-      padding: 0;
-      font-family: 'Segoe UI', sans-serif;
-      background: linear-gradient(to right, #e0f7fa, #fce4ec);
-      color: #333;
-      display: flex;
-      flex-direction: column;
-    }
-
-    main {
-      flex: 1;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      padding: 40px 20px;
-    }
-
-    .container {
-      max-width: 700px;
-      padding: 30px;
-      background: #fff;
-      border-radius: 16px;
-      box-shadow: 0 8px 20px rgba(0,0,0,0.15);
-      text-align: center;
-      animation: fadeIn 1.2s ease-out;
-    }
-
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(20px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-
-    h1 {
-      font-size: 36px;
-      margin-bottom: 20px;
-      color: #00796B;
-    }
-
-    p {
-      font-size: 18px;
-      line-height: 1.6;
-      margin-bottom: 20px;
-    }
-
-    ul {
-      text-align: left;
-      margin: 0 auto 20px;
-      max-width: 600px;
-      padding-left: 20px;
-      font-size: 17px;
-    }
-
-    li {
-      margin-bottom: 12px;
-    }
-
-    .btn {
-      background: linear-gradient(to right, #00796B, #009688);
-      color: white;
-      border: none;
-      padding: 15px 40px;
-      font-size: 18px;
-      border-radius: 10px;
-      cursor: pointer;
-      transition: transform 0.3s ease, box-shadow 0.3s ease;
-    }
-
-    .btn:hover {
-      transform: scale(1.05);
-      box-shadow: 0 0 10px rgba(0,121,107,0.6);
-    }
-
-    .emoji {
-      font-size: 22px;
-      margin-right: 8px;
-    }
-
-    footer {
-      padding: 15px 0;
-      background-color: #f1f1f1;
-      border-top: 1px solid #ddd;
-      text-align: center;
-      font-size: 15px;
-      color: #555;
-    }
-  </style>
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/index.css">
 </head>
 <body>
   <main>
-    <div class="container">
+    <!-- BLOCO 1: Apresentação -->
+    <div id="container-apresentacao" class="container">
       <h1>🎲 Sistema de Rolagem de Dados</h1>
-      <p>Transforme seus <strong>jogos caseiros</strong> com uma rolagem divertida, visual e personalizada. Ideal para reunir amigos e criar momentos memoráveis!</p>
+      <p>Transforme seus <strong>jogos caseiros</strong> com uma rolagem divertida, visual e personalizada.</p>
 
       <p><strong>Funcionalidades:</strong></p>
       <ul>
         <li><span class="emoji">🎨</span> Escolha de cor para identificar cada jogador</li>
-        <li><span class="emoji">🎲</span> Rolagens variadas: 2d6, 1d87, 1d2, 1d60</li>
+        <li><span class="emoji">🎲</span> Rolagens variadas: 1d2 até 1d100 e customizados</li>
         <li><span class="emoji">⏳</span> Suspense visual na rolagem</li>
         <li><span class="emoji">📜</span> Histórico com cores e nomes</li>
         <li><span class="emoji">🧹</span> Botão para limpar histórico</li>
       </ul>
 
-      <p><strong>Aplicações:</strong> Jogos de tabuleiro, dinâmicas em grupo, sorteios e decisões rápidas.</p>
+      <button class="btn" onclick="mostrarConfiguracaoSala()">Criar Nova Sala</button>
+    </div>
 
-      <p style="font-size: 15px; color: #888; font-style: italic;">
-        ⚠️ Esta aplicação está em desenvolvimento e representa apenas um protótipo inicial. Algumas funcionalidades podem ser ajustadas ou aprimoradas nas próximas versões.
-      </p>
+    <!-- BLOCO 2: Configuração da Sala (Limite de 12 jogadores e Dados) -->
+    <div id="container-config-sala" class="container hidden">
+      <h1>🛡️ Configuração da Sala de RPG</h1>
+      <p>Defina as regras e os dados que estarão disponíveis na mesa.</p>
 
-      <button class="btn" onclick="irParaRolagem()">Ir para a Rolagem de Dados</button>
+      <form id="form-criar-sala" onsubmit="criarMesaRpg(event)">
+        <div class="form-group">
+          <label for="qtd-jogadores"><strong>Quantidade máxima de jogadores (Máx: 12):</strong></label>
+          <input type="number" id="qtd-jogadores" min="1" max="12" value="4" required>
+        </div>
+
+        <div class="form-group">
+          <p><strong>Selecione os dados disponíveis na mesa:</strong></p>
+          <div class="grid-dados">
+            <label><input type="checkbox" name="dados-rpg" value="d2" checked> D2</label>
+            <label><input type="checkbox" name="dados-rpg" value="d4" checked> D4</label>
+            <label><input type="checkbox" name="dados-rpg" value="d6" checked> D6</label>
+            <label><input type="checkbox" name="dados-rpg" value="d8" checked> D8</label>
+            <label><input type="checkbox" name="dados-rpg" value="d10" checked> D10</label>
+            <label><input type="checkbox" name="dados-rpg" value="d12" checked> D12</label>
+            <label><input type="checkbox" name="dados-rpg" value="d20" checked> D20</label>
+            <label><input type="checkbox" name="dados-rpg" value="d100" checked> D100</label>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <p><strong>Dados Customizados adicionais:</strong></p>
+          <label>
+            <input type="checkbox" id="incluir-booleano" value="booleano"> 
+            Incluir Dado Booleano (Verdadeiro / Falso)
+          </label>
+        </div>
+
+        <div class="botoes-container">
+          <button type="button" class="btn btn-secundario" onclick="voltarParaApresentacao()">Voltar</button>
+          <button type="submit" class="btn">Abrir Mesa de RPG ⚔️</button>
+        </div>
+      </form>
     </div>
   </main>
 
@@ -122,12 +71,6 @@
     <p>Desenvolvido por <strong>Gabriel Aparecido de Oliveira</strong></p>
   </footer>
 
-  <script>
-    function irParaRolagem() {
-      window.location.href = "rolagem.html"; // Altere para o nome real do seu arquivo de rolagem
-    }
-  </script>
+  <script src="js/salas.js"></script>
 </body>
 </html>
-
-
